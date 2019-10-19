@@ -23,9 +23,9 @@ while count < num_pages:
 	pageObj = pdfReader.getPage(count)
 	text += pageObj.extractText()
 	count +=1
-file1 = open('tsmcCSR.txt', 'w')#write mode 
-file1.write(text) 
-file1.close()
+file = open('tsmcCSR.txt', 'w')#write mode 
+file.write(text) 
+file.close()
 
 data = []
 text = ''
@@ -35,6 +35,40 @@ with open('tsmcCSR.txt', 'r') as f:
 		
 	#for d in data:
 	#	text += d 
-file1 = open('tsmcCSR1.txt', 'w')#write mode 
-file1.write(text) 
-file1.close()
+file = open('tsmcCSR1.txt', 'w')#write mode 
+file.write(text) 
+file.close()
+
+data = []
+with open('tsmcCSR1.txt', 'r') as f:
+	for line in f:
+		data.append(line.strip())
+	
+words_dict = {}
+
+for d in data:
+	words = d.split()
+	for word in words:
+		if word in words_dict:
+			words_dict[word] += 1
+		else:
+			words_dict[word] = 1
+		total_word_count += 1
+
+for word in words_dict:
+	if words_dict[word] > 100:
+		print(word, ' ', words_dict[word])
+	if words_dict[word] > max_count:
+		max_count = words_dict[word]
+		max_count_word = word			
+print('maximun wording is "',max_count_word, '" by ', max_count, ' times!')
+print('Total words count =', total_word_count)
+
+while True:
+	i = input('input a word! or Q123 to quit ')
+	if i == 'Q123':
+		break
+	elif i in words_dict:
+		print(i, ' is in words_dict for', words_dict[i], ' times')
+	else:
+		print(i, ' is not in words_dict!')
