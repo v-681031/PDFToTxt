@@ -1,3 +1,4 @@
+trash = 'AppendixSustainable GovernanceOur Focuses and Progress Ethical ManagementInnovation and Service Responsible Supply ChainGreen Manufacturing Common GoodOur BusinessInclusive Workplace'
 # importing required modules 
 import PyPDF2 
 # creating a pdf file object 
@@ -11,6 +12,7 @@ num_pages = pdfReader.numPages
 print(num_pages)
 count = 0
 text = ''
+textBuffer =''
 data = []
 max_count = 0
 max_count_word = None
@@ -21,26 +23,51 @@ Total_length = 0
 #The while loop will read each page
 while count < num_pages:
 	pageObj = pdfReader.getPage(count)
-	text += pageObj.extractText()
+	textBuffer = pageObj.extractText()
+	if '\n' in textBuffer:
+		textBuffer = textBuffer.replace('\n', ' ')
+	if trash in textBuffer:
+		textBuffer = textBuffer.replace(trash, ' ')
+	text += textBuffer
+	textBuffer = ''
 	count +=1
 file = open('tsmcCSR.txt', 'w')#write mode 
 file.write(text) 
 file.close()
 
-data = []
+
+count = 0
 text = ''
-with open('tsmcCSR.txt', 'r') as f:
-	for line in f:
-		text += str(line.strip())
-		
-	#for d in data:
-	#	text += d 
-file = open('tsmcCSR1.txt', 'w')#write mode 
-file.write(text) 
-file.close()
+textBuffer =''
+data = []
+max_count = 0
+max_count_word = None
+total_word_count = 0 
+count = 0
+length = 0
+Total_length = 0
+while count < num_pages:
+	pageObj = pdfReader.getPage(count)
+	text += pageObj.extractText()
+	count +=1
+file1 = open('tsmcCSR1.txt', 'w')#write mode 
+file1.write(text) 
+file1.close()
 
 data = []
+text = ''
 with open('tsmcCSR1.txt', 'r') as f:
+	for line in f:
+		data.append(line.strip('\n'))
+	for d in data:
+		text += d 
+file1 = open('tsmcCSR1-1.txt', 'w')#write mode 
+file1.write(text) 
+file1.close()
+
+
+data = []
+with open('tsmcCSR.txt', 'r') as f:
 	for line in f:
 		data.append(line.strip())
 	
@@ -56,7 +83,7 @@ for d in data:
 		total_word_count += 1
 
 for word in words_dict:
-	if words_dict[word] > 100:
+	if words_dict[word] > 100000000000:
 		print(word, ' ', words_dict[word])
 	if words_dict[word] > max_count:
 		max_count = words_dict[word]
